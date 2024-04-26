@@ -2,7 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-
+import java.util.List;
+import java.util.ArrayList;
 public class SubwayMap {
     private Map<String, Map<String, Double>> map;
 
@@ -51,41 +52,33 @@ public class SubwayMap {
     public String toString() {
         return this.map.values().toString();
     }
-
-    public static void main(String[] args) {
-        SubwayMap subwayMap = new SubwayMap();
-
-
-        try (BufferedReader br = new BufferedReader(new FileReader("D:/subway.txt"))) {
-            String line;
-            String currentLine = null;
-            while ((line = br.readLine()) != null) {
-                if (line.contains("号线站点间距")) {
-                    currentLine = line.split("号线站点间距")[0];
-                    subwayMap.addLine(currentLine);
-                } else if (line.contains("---") || line.contains("—")) {
-                    String separator = line.contains("---") ? "---" : "—";
-                    String[] parts = line.split(separator);
-                    String station1 = parts[0].trim();
-
-                    String station2 = parts[1].split("\t")[0].trim();
-                    double distance = Double.parseDouble(parts[1].split("\t")[1].trim());
-                    subwayMap.addStation(currentLine, station1, distance);
-                    subwayMap.addStation(currentLine, station2, distance);
-                }
-
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(subwayMap);
-        Set<String> transferStations = subwayMap.getTransferStations();
-        System.out.println("Transfer Stations:");
-        for (String station : transferStations) {
-            System.out.println(station);
-        }
-
-
-    }
+    public List<String> findStationsWithinDistance(String station, int distance) {
+        List<String> results = new ArrayList<>();
+        // 遍历每一条地铁线路
+        for (Map<String,Double> M: map.values()) {
+            // 检查输入的站点是否在当前线路中
+            ArrayList<String> stations = new ArrayList<String>() ;
+for(String i:M.keySet())
+{stations.add(i);
 }
+
+
+            if (stations.contains(station)) {
+                int index = stations.indexOf(station);
+                // 在站点前后遍历以找到与输入站点相隔 `n` 站以内的所有站点
+                for (int i = Math.max(0, index - distance); i <= Math.min(stations.size() - 1, index + distance); i++) {
+                    // 计算相隔的站点数量
+                    int distanceFromStation = Math.abs(i - index);
+                    // 构建结果字符串并添加到结果列表中
+                    results.add(String.format("<<%s.%d>>", stations.get(i), distanceFromStation));
+                }
+            }
+        }
+        return results;
+    }
+
+
+
+
+}
+
