@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+
 public class SubwayMap {
     private Map<String, Map<String, Double>> map;
 
@@ -55,24 +57,34 @@ public class SubwayMap {
     public List<String> findStationsWithinDistance(String station, int distance) {
         List<String> results = new ArrayList<>();
         // 遍历每一条地铁线路
+List<String> Line=new ArrayList<>();
+for (String i: map.keySet())
+{Line.add(i);}
         for (Map<String,Double> M: map.values()) {
             // 检查输入的站点是否在当前线路中
+            int t=0;
+            String line=Line.get(t);
             ArrayList<String> stations = new ArrayList<String>() ;
-for(String i:M.keySet())
-{stations.add(i);
-}
+            for(String i:M.keySet())
+            {stations.add(i);
+            }
 
 
             if (stations.contains(station)) {
+
+
+
                 int index = stations.indexOf(station);
                 // 在站点前后遍历以找到与输入站点相隔 `n` 站以内的所有站点
                 for (int i = Math.max(0, index - distance); i <= Math.min(stations.size() - 1, index + distance); i++) {
                     // 计算相隔的站点数量
                     int distanceFromStation = Math.abs(i - index);
                     // 构建结果字符串并添加到结果列表中
-                    results.add(String.format("<<%s.%d>>", stations.get(i), distanceFromStation));
+
+                    results.add("<<"+stations.get(i)+","+line+"号线"+","+distanceFromStation+">>");
                 }
             }
+            t=t+1;
         }
         return results;
     }
