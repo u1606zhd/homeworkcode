@@ -40,11 +40,7 @@ public class Main {
         }
         List<String> l1 = subwayMap.findStationsWithinDistance("洪山广场", 4);
         System.out.println(l1);
-        List<List<String>> allPaths = subwayMap.findAllPaths("航空总部","盘龙城");
-        for (List<String> path : allPaths) {
-            System.out.println(path);
-        }
-
+        subwayMap.test3();;
     }
 }
 
