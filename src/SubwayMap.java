@@ -165,7 +165,93 @@ public class SubwayMap {
                 System.out.println(path);
             }
         }
-
         scanner.close();
+        ArrayList<Double> distances=new ArrayList<Double>();
+        for (List<String> path : allPaths)
+        {distances.add(this.getpathdistance((ArrayList<String>) path));}
+        double shortestdistance=this.shortestdistance(distances);
+        int indix=distances.indexOf(shortestdistance);
+        ArrayList<String> shortestestpath = (ArrayList<String>) allPaths.get(indix);
+        System.out.println("最短路径为：");
+        System.out.println(shortestestpath);
+        System.out.println("最短距离为");
+        System.out.println(shortestdistance);
+
     }
+
+    public double Connnecteddistance(String s1, String s2) {
+        Double distance= (double) 0;
+        for (Map<String, Double> M : map.values()) {
+            // 检查输入的站点是否在当前线路中
+
+            ArrayList<Double> distances = new ArrayList<Double>();
+            ArrayList<String> stations = new ArrayList<String>();
+            for (String i : M.keySet()) {
+                stations.add(i);
+            }
+            for (Double d : M.values()) {
+                distances.add(d);
+            }
+            if ((stations.contains(s1)) && (stations.contains(s2))) {
+                int index1 = stations.indexOf(s1);
+                int index2 = stations.indexOf(s2);
+                int q = index1 - index2;
+                if (q == 1) {
+                    distance = distances.get(index2);
+                } else {
+                    distance = distances.get(index1);
+
+
+                }
+
+
+            }
+        }
+        return distance;
+    }
+    public Double getpathdistance(ArrayList<String> list)
+    {Double d= (double) 0;
+        for (int i=0;i<list.toArray().length-1;i++)
+
+        {d=d+this.Connnecteddistance(list.get(i),list.get(i+1) );
+
+
+
+        }
+        return  d;
+    }
+    public Double shortestdistance(ArrayList<Double> list)
+    {double d=list.get(0);
+        for(int i=0;i<=list.toArray().length-1;i++)
+        {double temp=list.get(i);
+            if(d>temp)
+            {d=temp;
+            }
+        }
+        return  d;
+    }
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

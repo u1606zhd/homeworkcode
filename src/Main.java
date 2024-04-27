@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.List;
@@ -40,7 +41,9 @@ public class Main {
         }
         List<String> l1 = subwayMap.findStationsWithinDistance("洪山广场", 4);
         System.out.println(l1);
-        subwayMap.test3();;
+subwayMap.test3();
+
+
     }
 }
 
