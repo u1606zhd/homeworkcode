@@ -142,7 +142,7 @@ int t=0;
         }
         return connectedStations;
     }
-    public void findpath()
+    public void test3()
     {Scanner scanner = new Scanner(System.in);
 
         System.out.print("请输入起点站名称：");
