@@ -37,7 +37,7 @@ public class Main {
     for (String station : transferStations) {
         System.out.println(station);
     }
-List<String> l1= subwayMap.findStationsWithinDistance("三店",4);
+List<String> l1= subwayMap.findStationsWithinDistance("中南路",4);
     System.out.println(l1);
 
 }

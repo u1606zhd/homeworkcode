@@ -60,9 +60,10 @@ public class SubwayMap {
 List<String> Line=new ArrayList<>();
 for (String i: map.keySet())
 {Line.add(i);}
+int t=0;
         for (Map<String,Double> M: map.values()) {
             // 检查输入的站点是否在当前线路中
-            int t=0;
+
             String line=Line.get(t);
             ArrayList<String> stations = new ArrayList<String>() ;
             for(String i:M.keySet())
