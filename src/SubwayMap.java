@@ -169,6 +169,47 @@ public class SubwayMap {
 
         scanner.close();
     }
+
+    public class TrainRouteFinder {
+        private Map<String, List<String>> graph;
+
+        public TrainRouteFinder() {
+            this.graph = new HashMap<>();
+        }
+
+        public void addRoute(String start, String end) {
+            graph.computeIfAbsent(start, k -> new ArrayList<>()).add(end);
+            graph.computeIfAbsent(end, k -> new ArrayList<>()).add(start);
+        }
+
+        public List<List<String>> findAllPaths(String start, String end) {
+            List<List<String>> allPaths = new ArrayList<>();
+            Set<String> visited = new HashSet<>();
+            List<String> path = new ArrayList<>();
+            path.add(start);
+            dfs(start, end, visited, path, allPaths);
+            return allPaths;
+        }
+
+        private void dfs(String current, String end, Set<String> visited, List<String> path, List<List<String>> allPaths) {
+            visited.add(current);
+            if (current.equals(end)) {
+                allPaths.add(new ArrayList<>(path));
+                visited.remove(current);
+                return;
+            }
+            for (String neighbor : graph.getOrDefault(current, Collections.emptyList())) {
+                if (!visited.contains(neighbor)) {
+                    path.add(neighbor);
+                    dfs(neighbor, end, visited, path, allPaths);
+                    path.remove(path.size() - 1);
+                }
+            }
+            visited.remove(current);
+        }
+
+
+    }
 }
 
 
