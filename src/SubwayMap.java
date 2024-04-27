@@ -8,10 +8,14 @@ import java.util.Map;
 
 public class SubwayMap {
     private Map<String, Map<String, Double>> map;
+    private List<String> outList;
+
 
     public SubwayMap() {
         this.map = new LinkedHashMap<>();
+        this.outList = new ArrayList<String>();
     }
+
 
     public void addLine(String lineName) {
         map.put(lineName, new LinkedHashMap<>());
@@ -24,6 +28,7 @@ public class SubwayMap {
     public double getDistance(String lineName, String station1, String station2) {
         return map.get(lineName).get(station1) + map.get(lineName).get(station2);
     }
+
     public Set<String> getTransferStations() {
         Map<String, Set<String>> stationLines = new HashMap<>();
         for (String line : map.keySet()) {
@@ -54,25 +59,26 @@ public class SubwayMap {
     public String toString() {
         return this.map.values().toString();
     }
+
     public List<String> findStationsWithinDistance(String station, int distance) {
         List<String> results = new ArrayList<>();
         // 遍历每一条地铁线路
-List<String> Line=new ArrayList<>();
-for (String i: map.keySet())
-{Line.add(i);}
-int t=0;
-        for (Map<String,Double> M: map.values()) {
+        List<String> Line = new ArrayList<>();
+        for (String i : map.keySet()) {
+            Line.add(i);
+        }
+        int t = 0;
+        for (Map<String, Double> M : map.values()) {
             // 检查输入的站点是否在当前线路中
 
-            String line=Line.get(t);
-            ArrayList<String> stations = new ArrayList<String>() ;
-            for(String i:M.keySet())
-            {stations.add(i);
+            String line = Line.get(t);
+            ArrayList<String> stations = new ArrayList<String>();
+            for (String i : M.keySet()) {
+                stations.add(i);
             }
 
 
             if (stations.contains(station)) {
-
 
 
                 int index = stations.indexOf(station);
@@ -82,21 +88,23 @@ int t=0;
                     int distanceFromStation = Math.abs(i - index);
                     // 构建结果字符串并添加到结果列表中
 
-                    results.add("<<"+stations.get(i)+","+line+"号线"+","+distanceFromStation+">>");
+                    results.add("<<" + stations.get(i) + "," + line + "号线" + "," + distanceFromStation + ">>");
                 }
             }
-            t=t+1;
+            t = t + 1;
         }
         return results;
     }
-    public List<List<String>> findAllPaths(String startStation, String endStation) {
-        List<List<String>> allPaths = new ArrayList<>();
+
+    public ArrayList<List<String>> findAllPaths(String startStation, String endStation) {
+        ArrayList<List<String>> allPaths = new ArrayList<>();
         Set<String> visited = new HashSet<>();
         List<String> currentPath = new ArrayList<>();
         currentPath.add(startStation);
         findAllPathsDFS(startStation, endStation, visited, currentPath, allPaths);
         return allPaths;
     }
+
     private void findAllPathsDFS(String currentStation, String endStation, Set<String> visited, List<String> currentPath, List<List<String>> allPaths) {
         visited.add(currentStation);
         // 如果当前站点是终点站，则将当前路径添加到结果集中
@@ -119,15 +127,13 @@ int t=0;
     private List<String> getConnectedStations(String station) {
         List<String> connectedStations = new ArrayList<>();
 
-        for (Map<String,Double> M: map.values()) {
+        for (Map<String, Double> M : map.values()) {
             // 检查输入的站点是否在当前线路中
 
-            ArrayList<String> stations = new ArrayList<String>() ;
-            for(String i:M.keySet())
-            {stations.add(i);
+            ArrayList<String> stations = new ArrayList<String>();
+            for (String i : M.keySet()) {
+                stations.add(i);
             }
-
-
 
 
             if (stations.contains(station)) {
@@ -142,8 +148,9 @@ int t=0;
         }
         return connectedStations;
     }
-    public void test3()
-    {Scanner scanner = new Scanner(System.in);
+
+    public void test3() {
+        Scanner scanner = new Scanner(System.in);
 
         System.out.print("请输入起点站名称：");
         String startStation = scanner.nextLine();
@@ -162,14 +169,7 @@ int t=0;
 
         scanner.close();
     }
-
-
-
 }
-
-
-
-
 
 
 
