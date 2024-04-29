@@ -21,10 +21,6 @@ public class SubwayMap {
         map.get(lineName).put(stationName, distance);
     }
 
-    public double getDistance(String lineName, String station1, String station2) {
-        return map.get(lineName).get(station1) + map.get(lineName).get(station2);
-    }
-
     public Set<String> getTransferStations() {
         Map<String, Set<String>> stationLines = new HashMap<>();
         for (String line : map.keySet()) {
