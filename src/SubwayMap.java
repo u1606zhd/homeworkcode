@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -180,8 +178,26 @@ public class SubwayMap {
         System.out.print("请输入你选择的路线：");
         int linenumber=scanner.nextInt();
         this.showpath((ArrayList<String>) allPaths.get(linenumber));
-        scanner.close();
+
         System.out.println("距离为"+distances.get(linenumber));
+        System.out.println("请选择你的支付方式");
+        String payway=scanner.next();
+        if(payway.equals("单程票"))
+        {System.out.println("您选择单程票支付");
+            onewayticket onewayticket=new onewayticket();
+            System.out.println("价格为"+onewayticket.getprice(distances.get(linenumber)));
+        }
+        if (payway.equals("武汉通"))
+        {System.out.println("您选择武汉通支付");
+            wuhantong wuhantong=new wuhantong();
+            System.out.println("价格为"+wuhantong.getprice(distances.get(linenumber)));
+        }
+        if (payway.equals("定期票"))
+        {System.out.println("您选择定期票支付");
+            System.out.println("价格为"+0);
+        }
+        scanner.close();
+
     }
 
     public double Connnecteddistance(String s1, String s2) {
