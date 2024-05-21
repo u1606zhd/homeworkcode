@@ -103,6 +103,7 @@ public class SubwayMap {
         // 如果当前站点是终点站，则将当前路径添加到结果集中
         if (currentStation.equals(endStation)) {
             allPaths.add(new ArrayList<>(currentPath));
+            System.out.println(currentPath);
         } else {
             // 否则，遍历当前站点相连的所有站点
             List<String> connectedStations = getConnectedStations(currentStation);
@@ -154,148 +155,145 @@ public class SubwayMap {
         if (allPaths.isEmpty()) {
             System.out.println("未找到起点站和终点站之间的路径。");
         } else {
-            System.out.println("连接起点站和终点站的所有路径为：");
-            for (List<String> path : allPaths) {
-                System.out.println(path);
-            }
+            System.out.println(startStation + "到" + endStation + "的路径如上");
         }
-
-        ArrayList<Double> distances = new ArrayList<Double>();
-        for (List<String> path : allPaths) {
-            distances.add(this.getpathdistance((ArrayList<String>) path));
-        }
-        double shortestdistance = this.shortestdistance(distances);
-        int indix = distances.indexOf(shortestdistance);
-        ArrayList<String> shortestestpath = (ArrayList<String>) allPaths.get(indix);
-        System.out.println("最短路径为：");
-        System.out.println(shortestestpath);
-        System.out.println("最短距离为");
-        System.out.println(shortestdistance);
-        System.out.print("请输入你选择的路线：");
-        int linenumber=scanner.nextInt();
-        this.showpath((ArrayList<String>) allPaths.get(linenumber));
-
-        System.out.println("距离为"+distances.get(linenumber));
-        System.out.println("请选择你的支付方式");
-        String payway=scanner.next();
-        if(payway.equals("单程票"))
-        {System.out.println("您选择单程票支付");
-            onewayticket onewayticket=new onewayticket();
-            System.out.println("价格为"+onewayticket.getprice(distances.get(linenumber)));
-        }
-        if (payway.equals("武汉通"))
-        {System.out.println("您选择武汉通支付");
-            wuhantong wuhantong=new wuhantong();
-            System.out.println("价格为"+wuhantong.getprice(distances.get(linenumber)));
-        }
-        if (payway.equals("定期票"))
-        {System.out.println("您选择定期票支付");
-            System.out.println("价格为"+0);
-        }
-        scanner.close();
-
-    }
-
-    public double Connnecteddistance(String s1, String s2) {
-        Double distance = (double) 0;
-        for (Map<String, Double> M : map.values()) {
-            // 检查输入的站点是否在当前线路中
-
             ArrayList<Double> distances = new ArrayList<Double>();
-            ArrayList<String> stations = new ArrayList<String>();
-            for (String i : M.keySet()) {
-                stations.add(i);
+            for (List<String> path : allPaths) {
+                distances.add(this.getpathdistance((ArrayList<String>) path));
             }
-            for (Double d : M.values()) {
-                distances.add(d);
+            double shortestdistance = this.shortestdistance(distances);
+            int indix = distances.indexOf(shortestdistance);
+            ArrayList<String> shortestestpath = (ArrayList<String>) allPaths.get(indix);
+            System.out.println("最短路径为：");
+            System.out.println(shortestestpath);
+            System.out.println("最短距离为");
+            System.out.println(shortestdistance);
+            System.out.print("请输入你选择的路线：");
+            int linenumber = scanner.nextInt();
+            this.showpath((ArrayList<String>) allPaths.get(linenumber));
+
+            System.out.println("距离为" + distances.get(linenumber));
+            System.out.println("请选择你的支付方式");
+            String payway = scanner.next();
+            if (payway.equals("单程票")) {
+                System.out.println("您选择单程票支付");
+                onewayticket onewayticket = new onewayticket();
+                System.out.println("价格为" + onewayticket.getprice(distances.get(linenumber)));
             }
-            if ((stations.contains(s1)) && (stations.contains(s2))) {
-                int index1 = stations.indexOf(s1);
-                int index2 = stations.indexOf(s2);
-                int q = index1 - index2;
-                if (q == 1) {
-                    distance = distances.get(index2);
-                } else {
-                    distance = distances.get(index1);
+            if (payway.equals("武汉通")) {
+                System.out.println("您选择武汉通支付");
+                wuhantong wuhantong = new wuhantong();
+                System.out.println("价格为" + wuhantong.getprice(distances.get(linenumber)));
+            }
+            if (payway.equals("定期票")) {
+                System.out.println("您选择定期票支付");
+                System.out.println("价格为" + 0);
+            }
+            scanner.close();
+
+        }
+
+        public double Connnecteddistance (String s1, String s2){
+            Double distance = (double) 0;
+            for (Map<String, Double> M : map.values()) {
+                // 检查输入的站点是否在当前线路中
+
+                ArrayList<Double> distances = new ArrayList<Double>();
+                ArrayList<String> stations = new ArrayList<String>();
+                for (String i : M.keySet()) {
+                    stations.add(i);
+                }
+                for (Double d : M.values()) {
+                    distances.add(d);
+                }
+                if ((stations.contains(s1)) && (stations.contains(s2))) {
+                    int index1 = stations.indexOf(s1);
+                    int index2 = stations.indexOf(s2);
+                    int q = index1 - index2;
+                    if (q == 1) {
+                        distance = distances.get(index2);
+                    } else {
+                        distance = distances.get(index1);
+
+
+                    }
 
 
                 }
+            }
+            return distance;
+        }
+
+        public Double getpathdistance (ArrayList < String > list) {
+            Double d = (double) 0;
+            for (int i = 0; i < list.toArray().length - 1; i++) {
+                d = d + this.Connnecteddistance(list.get(i), list.get(i + 1));
 
 
             }
+            return d;
         }
-        return distance;
-    }
 
-    public Double getpathdistance(ArrayList<String> list) {
-        Double d = (double) 0;
-        for (int i = 0; i < list.toArray().length - 1; i++) {
-            d = d + this.Connnecteddistance(list.get(i), list.get(i + 1));
-
-
-        }
-        return d;
-    }
-
-    public Double shortestdistance(ArrayList<Double> list) {
-        double d = list.get(0);
-        for (int i = 0; i <= list.toArray().length - 1; i++) {
-            double temp = list.get(i);
-            if (d > temp) {
-                d = temp;
+        public Double shortestdistance (ArrayList < Double > list) {
+            double d = list.get(0);
+            for (int i = 0; i <= list.toArray().length - 1; i++) {
+                double temp = list.get(i);
+                if (d > temp) {
+                    d = temp;
+                }
             }
+            return d;
         }
-        return d;
-    }
 
-    public String getline(String s1, String s2) {
-        String nowline=null;
-        ArrayList<String> lines=new ArrayList<String>();
-        for(String i: map.keySet())
-
-        {lines.add(i);}
-        int i=0;
-
-        for (Map<String, Double> M : map.values()) {
-
-
-               String line= lines.get(i);
-            ArrayList<String> stations = new ArrayList<String>();
-            for (String s : M.keySet()) {
-                stations.add(s);
+        public String getline (String s1, String s2){
+            String nowline = null;
+            ArrayList<String> lines = new ArrayList<String>();
+            for (String i : map.keySet()) {
+                lines.add(i);
             }
+            int i = 0;
 
-            if ((stations.contains(s1)) && (stations.contains(s2))) {
-                  nowline=line;
+            for (Map<String, Double> M : map.values()) {
+
+
+                String line = lines.get(i);
+                ArrayList<String> stations = new ArrayList<String>();
+                for (String s : M.keySet()) {
+                    stations.add(s);
+                }
+
+                if ((stations.contains(s1)) && (stations.contains(s2))) {
+                    nowline = line;
+                }
+
+                i++;
             }
+            return nowline;
 
-            i++;
         }
-return nowline;
+        public void showpath (ArrayList < String > path)
+        {
+            String firststation = path.get(0);
+            String laststation = path.get(path.toArray().length - 1);
+            String firstline = this.getline(path.get(0), path.get(1));
+            System.out.println("从" + firststation + "出发" + "延" + firstline + "号线");
+            for (int i = 1; i < path.toArray().length - 1; i++) {
+                String previouspath = this.getline(path.get(i - 1), path.get(i));
+                String nowpath = this.getline(path.get(i), path.get(i + 1));
+                if (!previouspath.equals(nowpath)) {
+                    System.out.println("到" + path.get(i));
+                    System.out.println("转乘" + nowpath + "号线");
+                }
+            }
+            System.out.println("到" + laststation);
+
+
+        }
+
 
     }
-    public void  showpath(ArrayList<String> path)
-    {String firststation=path.get(0);
-        String laststation=path.get(path.toArray().length-1);
-        String firstline=this.getline(path.get(0), path.get(1));
-        System.out.println("从"+firststation+"出发"+"延"+firstline+"号线");
-        for (int i=1;i<path.toArray().length-1;i++)
-        {String previouspath=this.getline(path.get(i-1),path.get(i));
-            String nowpath=this.getline(path.get(i),path.get(i+1));
-            if(!previouspath.equals(nowpath))
-            {System.out.println("到"+path.get(i));
-        System.out.println("转乘"+nowpath+"号线");
-        }
-        }
-System.out.println("到"+laststation);
 
 
-
-
-    }
-
-
-}
 
 
 
